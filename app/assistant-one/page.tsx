@@ -123,30 +123,33 @@ export default function Chat() {
       const payload = [...messages, newMessage];
 
       // Call the API to start the SSE stream
-      const response = await axios.post("/api/chat", { messages: payload });
+      const response = await axios.post("/api/assistant-one", {
+        messages: payload,
+      });
       console.log("current response", response);
+      setMessages((prev) => [...prev, response.data.message]);
       // Create an EventSource to listen for SSE events
-      const eventSource = new EventSource("/api/chat");
+      // const eventSource = new EventSource("/api/assistant-one");
 
-      eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        const content = data.content;
+      // eventSource.onmessage = (event) => {
+      //   const data = JSON.parse(event.data);
+      //   const content = data.content;
 
-        // Update the state with the latest AI message
-        setMessages((prev) => {
-          const lastMessage = prev[prev.length - 1];
-          if (lastMessage.role === "assistant") {
-            return [...prev.slice(0, -1), { role: "assistant", content }];
-          } else {
-            return [...prev, { role: "assistant", content }];
-          }
-        });
-      };
+      //   // Update the state with the latest AI message
+      //   setMessages((prev) => {
+      //     const lastMessage = prev[prev.length - 1];
+      //     if (lastMessage.role === "assistant") {
+      //       return [...prev.slice(0, -1), { role: "assistant", content }];
+      //     } else {
+      //       return [...prev, { role: "assistant", content }];
+      //     }
+      //   });
+      // };
 
-      eventSource.onerror = () => {
-        eventSource.close();
-        setIsLoading(false);
-      };
+      // eventSource.onerror = () => {
+      //   eventSource.close();
+      //   setIsLoading(false);
+      // };
     } catch (error) {
       console.error("Failed to send message:", error);
       setIsLoading(false);

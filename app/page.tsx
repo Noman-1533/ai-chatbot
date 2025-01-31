@@ -26,8 +26,8 @@ export default function Home() {
     setIsClient(true); // Make sure code runs only on the client
   }, []);
 
-  const handleClick = () => {
-    router.push("/chat"); // Navigate to /chat
+  const handleClick = (pathName: string) => {
+    router.push(pathName); // Navigate to /chat
   };
 
   if (!isClient) {
@@ -35,10 +35,21 @@ export default function Home() {
   }
 
   return (
-    <div className="  flex justify-center ">
-      <button onClick={handleClick} className="w-40 border border-red-50 mt-72">
-        Chat with Assistant
-      </button>
+    <div className="  absolute top-[40%] left-[40%]">
+      <div className="flex flex-col gap-5">
+        <button
+          onClick={() => handleClick("assistant-one")}
+          className="w-72 border border-red-50 "
+        >
+          Chat with Assistant 1
+        </button>
+        <button
+          onClick={() => handleClick("assistant-two")}
+          className="w-72 border border-red-50"
+        >
+          Chat with Assistant 2
+        </button>
+      </div>
     </div>
   );
 }
